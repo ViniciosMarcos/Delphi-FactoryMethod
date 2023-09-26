@@ -1,0 +1,61 @@
+unit Model.Quadrado;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TQuadrado = class(TInterfacedObject, ICalculoArea)
+  private
+    FLado: Extended;
+    FArea: Extended;
+    procedure SetLado(const Value: Extended);
+  public
+    function GetArea: Extended;
+    destructor Destroy; override;
+    constructor Create(Lado: Extended);
+    property Lado: Extended read FLado write SetLado;
+  end;
+
+
+implementation
+
+uses
+  Vcl.Dialogs, System.SysUtils;
+
+{ TQuadrado }
+
+constructor TQuadrado.Create(Lado: Extended);
+begin
+  SetLado(Lado);
+end;
+
+destructor TQuadrado.Destroy;
+begin
+  inherited;
+  Free;
+end;
+
+function TQuadrado.GetArea: Extended;
+begin
+  if(Lado < 0) then
+  begin
+    MessageDlg('Não existem medidas negativas. Verifique!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Abort;
+  end;
+  Result := Lado * Lado;
+end;
+
+procedure TQuadrado.SetArea(const Value: Extended);
+begin
+  FArea := Value;
+end;
+
+procedure TQuadrado.SetLado(const Value: Extended);
+begin
+  FLado := Value;
+end;
+
+end.

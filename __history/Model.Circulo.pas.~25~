@@ -1,0 +1,46 @@
+unit Model.Circulo;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TCirculo = class(TInterfacedObject, ICalculoArea)
+  public
+    destructor Destroy; override;
+    class function New: ICalculoArea;
+    function CalcularArea(ValorA, ValorB, ValorC: Extended):Extended;
+  end;
+
+implementation
+
+{ TCirculo }
+
+uses
+  Vcl.Dialogs, System.SysUtils;
+
+function TCirculo.CalcularArea(ValorA, ValorB, ValorC: Extended): Extended;
+begin
+  if(ValorA < 0) then
+  begin
+    MessageDlg('Não existe raio negativo. Verifique!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Abort;
+  end;
+  Result := 3.14 * (ValorA * ValorA);
+end;
+
+destructor TCirculo.Destroy;
+begin
+  inherited;
+  Free;
+end;
+
+class function TCirculo.New: ICalculoArea;
+begin
+  Result := Self.Create;
+end;
+
+
+end.

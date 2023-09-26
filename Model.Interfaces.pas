@@ -1,0 +1,20 @@
+unit Model.Interfaces;
+
+interface
+
+type
+  TFiguraArea = (Triangulo, Quadrado, Losango, Retangulo, Trapezio, Circulo);
+
+  ICalculoArea = interface
+    ['{8082F420-7FE7-4FCE-A6D2-5D59B4BDD30D}']
+    function CalcularArea(ValorA, ValorB, ValorC: Extended):Extended;
+  end;
+
+  iFactory = interface
+    ['{352262CA-F4C5-4576-BCD0-EA9384636FF3}']
+    function Area(Figura: TFiguraArea): ICalculoArea;
+  end;
+
+implementation
+
+end.

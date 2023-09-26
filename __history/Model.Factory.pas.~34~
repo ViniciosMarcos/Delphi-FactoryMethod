@@ -1,0 +1,50 @@
+unit Model.Factory;
+
+interface
+
+uses
+  Model.Interfaces, Model.Quadrado, Model.Tringulo, Model.Losango,
+  Model.Retangulo, Model.Trapezio, Model.Circulo;
+
+Type
+  TModelFactory = class(TInterfacedObject, IFactory)
+  public
+    constructor Create;
+    destructor Destroy; override;
+    class function New: IFactory;
+    function Area(Figura: TFiguraArea): ICalculoArea;
+  end;
+
+implementation
+
+{ TModelFactory }
+
+function TModelFactory.Area(Figura: TFiguraArea): ICalculoArea;
+begin
+  case Figura of
+    Triangulo: TTriangulo.New;
+    Quadrado: TQuadrado.New;
+    Losango: TLosango.New;
+    Retangulo: TRetangulo.New;
+    Trapezio: TTrapezio.New;
+    Circulo: TCirculo.New;
+  end;
+end;
+
+constructor TModelFactory.Create;
+begin
+
+end;
+
+destructor TModelFactory.Destroy;
+begin
+  inherited;
+  Free;
+end;
+
+class function TModelFactory.New: IFactory;
+begin
+  Result := Self.Create;
+end;
+
+end.

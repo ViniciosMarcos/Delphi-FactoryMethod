@@ -1,0 +1,197 @@
+unit frmCalculo;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, Vcl.Mask, Model.Tringulo;
+
+type
+  TF_Calculo = class(TForm)
+    Image1: TImage;
+    RgArea: TRadioGroup;
+    EditA: TLabeledEdit;
+    EditB: TLabeledEdit;
+    EditC: TLabeledEdit;
+    BtnCalcular: TButton;
+    LblResultado: TLabel;
+    procedure RgAreaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure EditAKeyPress(Sender: TObject; var Key: Char);
+    procedure EditBKeyPress(Sender: TObject; var Key: Char);
+    procedure EditCKeyPress(Sender: TObject; var Key: Char);
+    procedure BtnCalcularClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    function ApenasNumeros(Numero: char): Boolean;
+  end;
+
+var
+  F_Calculo: TF_Calculo;
+
+implementation
+
+uses
+  Model.Factory, Model.Interfaces;
+
+{$R *.dfm}
+
+function TF_Calculo.ApenasNumeros(Numero: char): Boolean;
+begin
+  //Função destinada a verificação de apenas entrada de números no Edit.
+  if not (Numero in ['0' .. '9', #8, #13, ',', ^C, ^V, ^X]) then
+  begin
+    MessageDlg('Digite apenas números!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Result := False;
+  end
+  else
+    Result := True;
+end;
+
+procedure TF_Calculo.BtnCalcularClick(Sender: TObject);
+var
+  Calculo: IFactory;
+  Figura: ICalculoArea;
+  Resultado: Extended;
+  Figuras: TFiguraArea;
+begin
+
+  Calculo := TModelFactory.New;
+
+  Figuras := TFiguraArea(RgArea.ItemIndex);
+
+  case Figuras of
+    Triangulo: begin
+      Figura := Calculo.Area(TFiguraArea(Triangulo));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text),
+                                      StrToFloat(EditB.Text), 0);
+    end;
+
+    Quadrado: begin
+      Figura := Calculo.Area(TFiguraArea(Quadrado));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text), 0, 0);
+    end;
+
+    Losango: begin
+      Figura := Calculo.Area(TFiguraArea(Losango));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text),
+                                      StrToFloat(EditB.Text), 0);
+    end;
+
+    Retangulo: begin
+      Figura := Calculo.Area(TFiguraArea(Retangulo));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text),
+                                      StrToFloat(EditB.Text), 0);
+    end;
+
+    Trapezio: begin
+      Figura := Calculo.Area(TFiguraArea(Trapezio));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text),
+                                      StrToFloat(EditB.Text),
+                                      StrToFloat(EditC.Text));
+    end;
+
+    Circulo: begin
+      Figura := Calculo.Area(TFiguraArea(Circulo));
+      Resultado:= Figura.CalcularArea(StrToFloat(EditA.Text),
+                                      StrToFloat(EditB.Text), 0);
+    end;
+  end;
+
+  LblResultado.Caption := 'A Área da Figura é: ' + FloatToStr(Resultado);
+end;
+
+procedure TF_Calculo.EditAKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not ApenasNumeros(Key) then
+  begin
+    EditA.Clear;
+    Key := #0;
+  end;
+end;
+
+procedure TF_Calculo.EditBKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not ApenasNumeros(Key) then
+  begin
+    EditB.Clear;
+    Key := #0;
+  end;
+end;
+
+procedure TF_Calculo.EditCKeyPress(Sender: TObject; var Key: Char);
+begin
+  if not ApenasNumeros(Key) then
+  begin
+    EditC.Clear;
+    Key := #0;
+  end;
+end;
+
+procedure TF_Calculo.FormShow(Sender: TObject);
+begin
+  RgAreaClick(self);
+end;
+
+procedure TF_Calculo.RgAreaClick(Sender: TObject);
+begin
+  case RgArea.ItemIndex of
+    0:
+      begin
+        // Trinângulo
+        EditA.EditLabel.Caption := 'Valor para b:';
+        EditB.EditLabel.Caption := 'Valor para h:';
+        EditC.Visible := False;
+      end;
+    1:
+      begin
+        // Quadrado
+        EditA.Visible := True;
+        EditA.EditLabel.Caption := 'Valor para L:';
+        EditB.Visible := False;
+        EditC.Visible := False;
+      end;
+    2:
+      begin
+        //Losango
+        EditA.Visible := True;
+        EditA.EditLabel.Caption := 'Valor para D:';
+        EditB.Visible := True;
+        EditB.EditLabel.Caption := 'Valor para d:';
+        EditC.Visible := False;
+      end;
+    3:
+      begin
+        //Retângulo
+        EditA.Visible := True;
+        EditA.EditLabel.Caption := 'Valor para b:';
+        EditB.Visible := True;
+        EditB.EditLabel.Caption := 'Valor para h:';
+        EditC.Visible := False;
+      end;
+    4:
+      begin
+        //Trapézio
+        EditA.Visible := True;
+        EditA.EditLabel.Caption := 'Valor para B:';
+        EditB.Visible := True;
+        EditB.EditLabel.Caption := 'Valor para b:';
+        EditC.Visible := True;
+        EditC.EditLabel.Caption := 'Valor para h:';
+      end;
+    5:
+      begin
+        //Círculo
+        EditA.Visible := True;
+        EditA.EditLabel.Caption := 'Valor para r:';
+        EditB.Visible := False;
+        EditC.Visible := False;
+      end;
+  end;
+end;
+
+end.

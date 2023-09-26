@@ -1,0 +1,24 @@
+unit Model.Trapezio;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TTrapezio = class(TInterfacedObject, ICalculoArea)
+  public
+    function CalcularArea: Extended;
+  end;
+
+implementation
+
+{ TTrapezio }
+
+function TTrapezio.CalcularArea: Extended;
+begin
+
+end;
+
+end.

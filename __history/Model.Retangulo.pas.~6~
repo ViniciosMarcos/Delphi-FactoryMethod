@@ -1,0 +1,58 @@
+unit Model.Retangulo;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TRetangulo = class(TInterfacedObject, ICalculoArea)
+  private
+    FAltura: Extended;
+    FBase: Extended;
+    FArea: Extended;
+    procedure SetAltura(const Value: Extended);
+    procedure SetArea(const Value: Extended);
+    procedure SetBase(const Value: Extended);
+
+  public
+    function CalcularArea: Extended;
+    property Base: Extended read FBase write SetBase;
+    property Altura: Extended read FAltura write SetAltura;
+    property Area: Extended read FArea write SetArea;
+  end;
+
+implementation
+
+uses
+  System.SysUtils, Vcl.Dialogs;
+
+{ TRetangulo }
+
+function TRetangulo.CalcularArea: Extended;
+begin
+  if(Base < 0) or (Altura < 0) then
+  begin
+    MessageDlg('Não existe medidas negativas.Verifique!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Abort;
+  end;
+  Area := Base * Altura;
+end;
+
+procedure TRetangulo.SetAltura(const Value: Extended);
+begin
+  FAltura := Value;
+end;
+
+procedure TRetangulo.SetArea(const Value: Extended);
+begin
+  FArea := Value;
+end;
+
+procedure TRetangulo.SetBase(const Value: Extended);
+begin
+  FBase := Value;
+end;
+
+end.

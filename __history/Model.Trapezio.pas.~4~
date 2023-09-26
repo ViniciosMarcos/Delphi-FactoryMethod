@@ -1,0 +1,63 @@
+unit Model.Trapezio;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TTrapezio = class(TInterfacedObject, ICalculoArea)
+  private
+    FBaseMaior: Extended;
+    FBaseMenor: Extended;
+    FAlura: Extended;
+    FArea: Extended;
+    procedure SetAlura(const Value: Extended);
+    procedure SetArea(const Value: Extended);
+    procedure SetBaseMaior(const Value: Extended);
+    procedure SetBaseMenor(const Value: Extended);
+  public
+    function CalcularArea: Extended;
+    class function New: ICalculoArea;
+    property BaseMaior: Extended read FBaseMaior write SetBaseMaior;
+    property BaseMenor: Extended read FBaseMenor write SetBaseMenor;
+    property Alura: Extended read FAlura write SetAlura;
+    property Area: Extended read FArea write SetArea;
+  end;
+
+implementation
+
+{ TTrapezio }
+
+function TTrapezio.CalcularArea: Extended;
+begin
+
+end;
+
+class function TTrapezio.New: ICalculoArea;
+begin
+  Result := Self.Create;
+end;
+
+procedure TTrapezio.SetAlura(const Value: Extended);
+begin
+  FAlura := Value;
+end;
+
+procedure TTrapezio.SetArea(const Value: Extended);
+begin
+  FArea := Value;
+end;
+
+procedure TTrapezio.SetBaseMaior(const Value: Extended);
+begin
+  FBaseMaior := Value;
+end;
+
+procedure TTrapezio.SetBaseMenor(const Value: Extended);
+begin
+  FBaseMenor := Value;
+end;
+
+end.

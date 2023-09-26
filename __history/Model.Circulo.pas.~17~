@@ -1,0 +1,63 @@
+unit Model.Circulo;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+
+  TCirculo = class(TInterfacedObject, ICalculoArea)
+  private
+    FRaio: Extended;
+    FArea: Extended;
+    procedure SetRaio(const Value: Extended);
+    procedure SetArea(const Value: Extended);
+  public
+    function CalcularArea: Extended;
+    destructor Destroy; override;
+    constructor Create; override;
+    property Raio: Extended read FRaio write SetRaio;
+    property Area: Extended read FArea write SetArea;
+  end;
+
+implementation
+
+{ TCirculo }
+
+uses
+  Vcl.Dialogs, System.SysUtils;
+
+function TCirculo.CalcularArea: Extended;
+begin
+  if(Raio < 0) then
+  begin
+    MessageDlg('Não existe raio negativo. Verifique!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Abort;
+  end;
+  Area := 3.14 * (Raio * Raio);
+end;
+
+constructor TCirculo.Create;
+begin
+  inherited;
+  Self.Create;
+end;
+
+destructor TCirculo.Destroy;
+begin
+  inherited;
+  Free;
+end;
+
+procedure TCirculo.SetArea(const Value: Extended);
+begin
+  FArea := Value;
+end;
+
+procedure TCirculo.SetRaio(const Value: Extended);
+begin
+  FRaio := Value;
+end;
+
+end.

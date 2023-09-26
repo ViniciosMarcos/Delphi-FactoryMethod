@@ -1,0 +1,56 @@
+unit Model.Losango;
+
+interface
+
+uses
+  Model.Interfaces;
+
+type
+  TLosango = class(TInterfacedObject, ICalculoArea)
+  private
+    FDiagonalMaior: Extended;
+    FDiagonalMenor: Extended;
+    FArea: Extended;
+    procedure SetDiagonalMaior(const Value: Extended);
+    procedure SetDiagonalMenor(const Value: Extended);
+    procedure SetArea(const Value: Extended);
+  public
+    function CalcularArea: Extended;
+    property DiagonalMaior: Extended read FDiagonalMaior write SetDiagonalMaior;
+    property DiagonalMenor: Extended read FDiagonalMenor write SetDiagonalMenor;
+    property Area: Extended read FArea write SetArea;
+  end;
+
+implementation
+
+uses
+  Vcl.Dialogs, System.SysUtils;
+
+{ TLosango }
+
+function TLosango.CalcularArea: Extended;
+begin
+  if(DiagonalMaior < 0) or (DiagonalMenor < 0)then
+  begin
+    MessageDlg('Não existem medidas negativas. Verifique!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    Abort;
+  end;
+  Area := (DiagonalMaior * DiagonalMenor) / 2;
+end;
+
+procedure TLosango.SetArea(const Value: Extended);
+begin
+  FArea := Value;
+end;
+
+procedure TLosango.SetDiagonalMaior(const Value: Extended);
+begin
+  FDiagonalMaior := Value;
+end;
+
+procedure TLosango.SetDiagonalMenor(const Value: Extended);
+begin
+  FDiagonalMenor := Value;
+end;
+
+end.
